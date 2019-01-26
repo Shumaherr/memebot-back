@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class finder {
+public class SearchService {
     String getUrl(double[] grade)
     {
         ArrayList allMemes = new ArrayList();

@@ -1,12 +1,15 @@
 package com.robotyagi.photohackmeme.service;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class emotionRequest {
+public class PicProcessor {
 
     String getEmotions(String pictureurl)
     {
@@ -39,4 +42,20 @@ public class emotionRequest {
             }
 
             }
+
+    public double[] getArray(String jsonin)
+    {
+        String url = jsonin.substring(1,jsonin.length()-1);
+        JSONObject obj = new JSONObject(jsonin).getJSONObject("faceAttributes");
+
+        JSONArray arr = obj.getJSONArray("emotion");
+
+        double[] grade= new double[arr.length()];
+        for (int i = 0; i < arr.length(); i++) {
+            double elem = arr.getDouble(i);
+            grade[i] = elem;
+        }
+
+        return grade;
+    }
 }
