@@ -4,63 +4,77 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PicProcessor {
 
-    String getEmotions(String pictureurl)
-    {
-        //final String body= "{\"url\": \""+pictureurl+"\"}";
-        final String body= "{\"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/800px-Donald_Trump_official_portrait.jpg\"}";
-        System.out.println(body);
-        try{
+    public String getEmotions(String pictureurl) {
+        final String body = "{\"url\": \"" + pictureurl + "\"}";
+
+            String response = "";
+            try {
                 URL url = new URL("https://francecentral.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=false&returnFaceLandmarks=false&returnFaceAttributes=emotion");
-                HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setReadTimeout(15000);
+                con.setConnectTimeout(15000);
                 con.setRequestMethod("POST");
+                con.setDoInput(true);
+                con.setDoOutput(true);
                 con.setRequestProperty("Content-Type", "application/json");
                 con.setRequestProperty("Ocp-Apim-Subscription-Key", "fd3c1e04a97947a4acf0d88024b1b518");
-                con.setDoOutput(true);
-                con.setDoInput(true);
 
-            OutputStream os = con.getOutputStream();
+                OutputStream os = con.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(body);
 
-                InputStream is = new ByteArrayInputStream(body.getBytes());
-                int c;
-                byte[] buf = new byte[8192];
-                while ((c = is.read(buf, 0, buf.length)) > 0)
-                {
-                    os.write(buf, 0, c);
-                    os.flush();
-                }
+                writer.flush();
+                writer.close();
                 os.close();
-                is.close();
-                Object response = con.getContent();
-                return response.toString();
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-                return e.toString();
-            }
+                int responseCode = con.getResponseCode();
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    response = br.readLine();
 
+                } else {
+                    response = "Error Registering";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return response;
+    }
 
     public double[] getArray(String jsonin)
     {
-        String url = jsonin.substring(1,jsonin.length()-1);
-        JSONObject obj = new JSONObject(jsonin).getJSONObject("faceAttributes");
+        String objin = jsonin.substring(1,jsonin.length()-1);
+        JSONObject obj = new JSONObject(objin).getJSONObject("faceAttributes");
+        JSONObject emotion = obj.getJSONObject("emotion");
+        System.out.println(emotion);
+        double anger = emotion.getDouble("anger");
+        double contempt = emotion.getDouble("contempt");
+        double disgust = emotion.getDouble("disgust");
+        double fear = emotion.getDouble("fear");
+        double happiness = emotion.getDouble("happiness");
+        double neutral = emotion.getDouble("neutral");
+        double sadness = emotion.getDouble("sadness");
+        double surprise = emotion.getDouble("surprise");
 
-        JSONArray arr = obj.getJSONArray("emotion");
-
-        double[] grade= new double[arr.length()];
-        for (int i = 0; i < arr.length(); i++) {
-            double elem = arr.getDouble(i);
-            grade[i] = elem;
-        }
-
+        double[] grade = new double[8];
+        grade[0]= anger;
+        grade[1]= contempt;
+        grade[2]= disgust;
+        grade[3]= fear;
+        grade[4]= happiness;
+        grade[5]= neutral;
+        grade[6]= sadness;
+        grade[7]= surprise;
         return grade;
     }
 }
