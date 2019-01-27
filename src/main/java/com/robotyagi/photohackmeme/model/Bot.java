@@ -24,6 +24,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.security.InvalidKeyException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -60,12 +61,16 @@ public class Bot extends TelegramLongPollingBot {
                 DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                 Date date = new Date();
                 String fileOutName = "photo" + dateFormat.format(date) + ".jpg" ;
-                String memes = FileService.uploadFile(fileOutName, message.getPhoto().get(message.getPhoto().size() - 1).getFileId(), this, message.getPhoto().size());
+                ArrayList<String> memesArr = FileService.uploadFile(fileOutName, message.getPhoto().get(message.getPhoto().size() - 1).getFileId(), this, message.getPhoto().size());
+                String memes = memesArr.get(0);
+                String text = memesArr.get(1);
                 SendPhoto sendPhotoRequest = new SendPhoto();
                 sendPhotoRequest.setChatId(message.getChatId().toString());
                 sendPhotoRequest.setPhoto(memes);
+                sendPhotoRequest.setCaption(text);
                 try {
                     sendPhoto(sendPhotoRequest);
+
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }

@@ -6,7 +6,10 @@ import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
+import javax.imageio.ImageIO;
 import javax.net.ssl.HttpsURLConnection;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -96,6 +99,28 @@ public class PicProcessor {
             }
         catch(Exception e){System.out.println(e); }
         return newPicUrl;
+    }
+
+    public OutputStream getCert (int index, InputStream is)
+    {
+        InputStream ismain = is;
+        BufferedImage read = null;
+        try {
+            read = ImageIO.read(ismain);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Graphics g = read.getGraphics();
+        g.setColor(Color.BLACK);
+        g.drawString("Hello world ",7, 55);
+        g.dispose();
+        OutputStream os = null;
+        try {
+            ImageIO.write(read, "jpg", new File("image.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return os;
     }
 }
 
