@@ -1,5 +1,6 @@
 package com.robotyagi.photohackmeme;
 
+import com.robotyagi.photohackmeme.config.BotInit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PhotohackMemeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PhotohackMemeApplication.class, args);
+		SpringApplication.run(new Class<?>[] {PhotohackMemeApplication.class, BotInit.class}, args);
 	}
 
 }
