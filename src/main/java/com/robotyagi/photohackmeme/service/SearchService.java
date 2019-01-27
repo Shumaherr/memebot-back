@@ -1,5 +1,7 @@
 package com.robotyagi.photohackmeme.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -68,7 +70,10 @@ public class SearchService {
                 sum += dx[j]*dx[j];
             }
 
-            distance = Double.parseDouble(new DecimalFormat("##.##").format(Math.sqrt(sum)));
+            //distance = Double.parseDouble(new DecimalFormat("##.##").format(Math.sqrt(sum)));
+
+            BigDecimal sumBig = new BigDecimal(sum);
+            distance = sumBig.setScale(4, RoundingMode.HALF_UP).doubleValue();
             if (distance < minDist)
             {
                 minDist = distance;

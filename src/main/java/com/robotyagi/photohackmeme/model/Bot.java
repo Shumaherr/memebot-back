@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.PhotoSize;
 import org.telegram.telegrambots.api.objects.Update;
@@ -21,6 +22,9 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.security.InvalidKeyException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Service
@@ -53,8 +57,18 @@ public class Bot extends TelegramLongPollingBot {
 
             }
             try {
-                String fileOutName = "photo" +  message.getPhoto().get(message.getPhoto().size() - 1).getFileId();
-                FileService.uploadFile(fileOutName, message.getPhoto().get(message.getPhoto().size() - 1).getFileId(), this, message.getPhoto().size());
+                DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                Date date = new Date();
+                String fileOutName = "photo" + dateFormat.format(date) + ".jpg" ;
+                String memes = FileService.uploadFile(fileOutName, message.getPhoto().get(message.getPhoto().size() - 1).getFileId(), this, message.getPhoto().size());
+                SendPhoto sendPhotoRequest = new SendPhoto();
+                sendPhotoRequest.setChatId(message.getChatId().toString());
+                sendPhotoRequest.setPhoto(memes);
+                try {
+                    sendPhoto(sendPhotoRequest);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (StorageException e) {

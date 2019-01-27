@@ -76,12 +76,12 @@ public class PicProcessor {
     }
     public String processImage(String inputImageUrl) {
         String memeOutUrl;
-        PicProcessor pp = new PicProcessor();
-        String emo = pp.getEmotions(inputImageUrl);
-        double[] emotions = pp.getArray(emo);
+
+        String emo = this.getEmotions(inputImageUrl);
+        double[] emotions = this.getArray(emo);
         SearchService ss = new SearchService();
         String temp = ss.getUrl(emotions);
-        memeOutUrl = pp.getPicAPI(inputImageUrl, temp);
+        memeOutUrl = this.getPicAPI(inputImageUrl, temp);
         return memeOutUrl;
     }
     public String getPicAPI(String picURL, String template){

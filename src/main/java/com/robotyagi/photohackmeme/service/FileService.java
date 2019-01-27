@@ -22,7 +22,7 @@ public class FileService {
             "DefaultEndpointsProtocol=http;" +
                     "AccountName=photohackdiag;" +
                     "AccountKey=dIAgBnoFcBIjiXt2tf/kRyMHIKm2zaPlRAH5dX867wbmdpNbVRyVWFoH52MVW3HxUZtGTWcvb7DxaeszNdSk/A==";
-    public static void uploadFile(String file_name, String file_id, Bot bot, int size) throws IOException, URISyntaxException, StorageException, InvalidKeyException {
+    public static String uploadFile(String file_name, String file_id, Bot bot, int size) throws IOException, URISyntaxException, StorageException, InvalidKeyException {
 
         CloudStorageAccount   storageAccount = CloudStorageAccount.parse(storageConnectionString);
         CloudFileClient fileClient = storageAccount.createCloudFileClient();
@@ -39,24 +39,15 @@ public class FileService {
         String full_path = "https://api.telegram.org/file/bot" + bot.getBotToken() + "/" + file_path;
         URL downoload = new URL(full_path);
 
-
-
-        java.io.FileOutputStream fos = new FileOutputStream("C:\\Users\\Aodintsov\\Desktop\\" + file_name);
         System.out.println("Start upload");
-        ReadableByteChannel rbc = Channels.newChannel(downoload.openStream());
-        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-
-
-
         CloudFile cloudFile = rootDir.getFileReference(file_name);
         //cloudFile.uploadFromFile(full_path);
         cloudFile.upload(downoload.openStream(), size * 1024 * 1024);
-        fos.close();
-        rbc.close();
         System.out.println("Uploaded!");
-        String fileOutUrl = "https://photohackdiag.file.core.windows.net/memes/" + file_name + "?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-03-27T16:50:41Z&st=2019-01-27T08:50:41Z&spr=https&sig=6vXfX79084zfiRZL97XFlcF5XhXFX7ytsjMdyWUsMo4%3D";
+        String fileOutUrl = "https://photohackdiag.file.core.windows.net/uploads/" + file_name + "?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-03-27T16:50:41Z&st=2019-01-27T08:50:41Z&spr=https&sig=6vXfX79084zfiRZL97XFlcF5XhXFX7ytsjMdyWUsMo4%3D";
         PicProcessor picProcessor = new PicProcessor();
         String meme = picProcessor.processImage(fileOutUrl);
+        return meme;
     }
 
 
