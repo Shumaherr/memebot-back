@@ -67,7 +67,8 @@ public class Bot extends TelegramLongPollingBot {
                 SendPhoto sendPhotoRequest = new SendPhoto();
                 sendPhotoRequest.setChatId(message.getChatId().toString());
                 sendPhotoRequest.setPhoto(memes);
-                sendPhotoRequest.setCaption(text);
+                String result = Double.parseDouble(text) >=80.0d?"% Хороший результат!!111" : "% Так себе!(";
+                sendPhotoRequest.setCaption("Вы меметичны на " + text + result);
                 try {
                     sendPhoto(sendPhotoRequest);
 

@@ -94,7 +94,7 @@ public class SearchService {
             }
             catch(Exception e){System.out.println(e);}
             returnlist.add(0,url);
-            returnlist.add(1,(1-minDist)*100+"%");
+            returnlist.add(1,(1-minDist)*100 + " ");
         }
         catch(Exception e){System.out.print(e);}
         return returnlist;
