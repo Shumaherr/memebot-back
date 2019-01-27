@@ -3,6 +3,7 @@ package com.robotyagi.photohackmeme.service;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,15 +14,19 @@ public class PicProcessor {
 
     String getEmotions(String pictureurl)
     {
-        final String body= "{\"url\": \""+pictureurl+"\"}";
-            try{
+        //final String body= "{\"url\": \""+pictureurl+"\"}";
+        final String body= "{\"url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/800px-Donald_Trump_official_portrait.jpg\"}";
+        System.out.println(body);
+        try{
                 URL url = new URL("https://francecentral.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=false&returnFaceLandmarks=false&returnFaceAttributes=emotion");
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
                 con.setRequestMethod("POST");
                 con.setRequestProperty("Content-Type", "application/json");
                 con.setRequestProperty("Ocp-Apim-Subscription-Key", "fd3c1e04a97947a4acf0d88024b1b518");
                 con.setDoOutput(true);
-                OutputStream os = con.getOutputStream();
+                con.setDoInput(true);
+
+            OutputStream os = con.getOutputStream();
 
                 InputStream is = new ByteArrayInputStream(body.getBytes());
                 int c;
