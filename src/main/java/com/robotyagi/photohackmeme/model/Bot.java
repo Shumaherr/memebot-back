@@ -53,7 +53,8 @@ public class Bot extends TelegramLongPollingBot {
 
             }
             try {
-                FileService.uploadFile("test.jpg", message.getPhoto().get(message.getPhoto().size() - 1).getFileId(), this, message.getPhoto().size());
+                String fileOutName = "photo" +  message.getPhoto().get(message.getPhoto().size() - 1).getFileId();
+                FileService.uploadFile(fileOutName, message.getPhoto().get(message.getPhoto().size() - 1).getFileId(), this, message.getPhoto().size());
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (StorageException e) {

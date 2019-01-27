@@ -58,4 +58,11 @@ public class PicProcessor {
 
         return grade;
     }
+
+    public String processImage(String inputImageUrl)
+    {
+        String memeOutUrl = new String();
+
+        return memeOutUrl;
+    }
 }

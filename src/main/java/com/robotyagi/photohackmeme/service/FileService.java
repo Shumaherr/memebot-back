@@ -54,6 +54,9 @@ public class FileService {
         fos.close();
         rbc.close();
         System.out.println("Uploaded!");
+        String fileOutUrl = "https://photohackdiag.file.core.windows.net/memes/" + file_name + "?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-03-27T16:50:41Z&st=2019-01-27T08:50:41Z&spr=https&sig=6vXfX79084zfiRZL97XFlcF5XhXFX7ytsjMdyWUsMo4%3D";
+        PicProcessor picProcessor = new PicProcessor();
+        String meme = picProcessor.processImage(fileOutUrl);
     }
 
 
