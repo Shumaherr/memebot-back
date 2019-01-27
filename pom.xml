@@ -50,6 +50,13 @@
 			<artifactId>telegram-spring-boot-starter</artifactId>
 			<version>0.19</version>
 		</dependency> -->
+		<!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage -->
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-storage</artifactId>
+			<version>8.0.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
