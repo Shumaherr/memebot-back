@@ -3,7 +3,6 @@ package com.robotyagi.photohackmeme.service;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import org.json.JSONObject;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 import javax.imageio.ImageIO;
@@ -13,6 +12,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PicProcessor {
 
@@ -77,14 +78,14 @@ public class PicProcessor {
         grade[7] = surprise;
         return grade;
     }
-    public String processImage(String inputImageUrl) {
-        String memeOutUrl;
+    public ArrayList<String> processImage(String inputImageUrl) {
         String emo = this.getEmotions(inputImageUrl);
         double[] emotions = this.getArray(emo);
         SearchService ss = new SearchService();
-        String temp = ss.getUrl(emotions);
-        memeOutUrl = this.getPicAPI(inputImageUrl, temp);
-        return memeOutUrl;
+        ArrayList<String> returnlist = ss.getUrl(emotions);
+        String memeOutUrl = this.getPicAPI(inputImageUrl, returnlist.get(0));
+        returnlist.set(0,memeOutUrl);
+        return returnlist;
     }
     public String getPicAPI(String picURL, String template){
         String newPicUrl ="";

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class SearchService {
-    public String getUrl(double[] grade) {
+    public ArrayList<String> getUrl(double[] grade) {
         ArrayList allMemes = new ArrayList();
 
         String url = "jdbc:postgresql://20.188.36.158:5432/hacker";
@@ -80,6 +80,8 @@ public class SearchService {
                 index = i+1;
             }
         }
+        ArrayList<String> returnlist = new ArrayList<String>();
+
         try{
             Class.forName("org.postgresql.Driver");
             Connection conn = DriverManager.getConnection(url, props);
@@ -91,9 +93,11 @@ public class SearchService {
                 }
             }
             catch(Exception e){System.out.println(e);}
+            returnlist.add(0,url);
+            returnlist.add(1,(1-minDist)*100+"%");
         }
         catch(Exception e){System.out.print(e);}
-        return url;
+        return returnlist;
     }
 }
 
