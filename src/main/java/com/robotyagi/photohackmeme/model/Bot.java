@@ -1,58 +1,47 @@
 package com.robotyagi.photohackmeme.model;
 
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+
+@Service
 public class Bot extends TelegramLongPollingBot {
-
-    /**
-     * Метод для приема сообщений.
-     * @param update Содержит сообщение от пользователя.
-     */
-
-    Logger log = Logger.getLogger(Bot.class.getName());
-    @Override
-    public void onUpdateReceived(Update update) {
-        String message = update.getMessage().getText();
-        sendMsg(update.getMessage().getChatId().toString(), message);
-    }
-
-    /**
-     * Метод для настройки сообщения и его отправки.
-     * @param chatId id чата
-     * @param s Строка, которую необходимот отправить в качестве сообщения.
-     */
-    public synchronized void sendMsg(String chatId, String s) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(s);
-        try {
-            sendMessage(sendMessage);
-        } catch (TelegramApiException e) {
-            log.log(Level.SEVERE, "Exception: ", e.toString());
-        }
-    }
-
-    /**
-     * Метод возвращает имя бота, указанное при регистрации.
-     * @return имя бота
-     */
     @Override
     public String getBotUsername() {
-        return "memefication_bot";
+        return "memeficator_bot";
     }
 
-    /**
-     * Метод возвращает token бота для связи с сервером Telegram
-     * @return token для бота
-     */
     @Override
     public String getBotToken() {
         return "758153614:AAGmxQgNclxVgJV-lrs1pbHuNDQs8-J_0Ro";
     }
+
+    @Override
+    public void onUpdateReceived(Update update) {
+        Message message = update.getMessage();
+        if (message != null && message.hasText()) {
+            if (message.getText().equals("/help"))
+                sendMsg(message, "Привет, я робот");
+            else
+                sendMsg(message, "Я не знаю что ответить на это");
+        }
+    }
+
+    private void sendMsg(Message message, String text) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(message.getChatId().toString());
+        sendMessage.setReplyToMessageId(message.getMessageId());
+        sendMessage.setText(text);
+        try {
+            sendMessage(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
