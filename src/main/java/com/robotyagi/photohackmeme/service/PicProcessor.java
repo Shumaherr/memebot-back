@@ -1,5 +1,7 @@
 package com.robotyagi.photohackmeme.service;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -8,9 +10,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PicProcessor {
 
@@ -56,7 +56,6 @@ public class PicProcessor {
         String objin = jsonin.substring(1,jsonin.length()-1);
         JSONObject obj = new JSONObject(objin).getJSONObject("faceAttributes");
         JSONObject emotion = obj.getJSONObject("emotion");
-        System.out.println(emotion);
         double anger = emotion.getDouble("anger");
         double contempt = emotion.getDouble("contempt");
         double disgust = emotion.getDouble("disgust");
@@ -77,4 +76,41 @@ public class PicProcessor {
         grade[7]= surprise;
         return grade;
     }
+
+    public String getPicAPI(String picURL, String template){
+        String newPicUrl ="";
+        final String body = "";
+        try {
+            HttpURLConnection connection = null;
+            URL url = new URL("http://api-soft.photolab.me/template_process.php");
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setUseCaches(false);
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+   //         urlParameters.add(new BasicNameValuePair("image_url[1]", picURL));
+   //         urlParameters.add(new BasicNameValuePair("template_name", template));
+            DataOutputStream os = new DataOutputStream (
+                    connection.getOutputStream());
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write("");
+            os.close();
+            InputStream is = connection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                response.append(line);
+                response.append('\r');
+            }
+            newPicUrl=response.toString();
+            br.close();
+            }
+        catch(Exception e){System.out.println(e); }
+        return newPicUrl;
+    }
 }
+
