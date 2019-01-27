@@ -50,9 +50,8 @@ public class PicProcessor {
             return response;
     }
 
-    public double[] getArray(String jsonin)
-    {
-        String objin = jsonin.substring(1,jsonin.length()-1);
+    public double[] getArray(String jsonin) {
+        String objin = jsonin.substring(1, jsonin.length() - 1);
         JSONObject obj = new JSONObject(objin).getJSONObject("faceAttributes");
         JSONObject emotion = obj.getJSONObject("emotion");
         double anger = emotion.getDouble("anger");
@@ -65,21 +64,24 @@ public class PicProcessor {
         double surprise = emotion.getDouble("surprise");
 
         double[] grade = new double[8];
-        grade[0]= anger;
-        grade[1]= contempt;
-        grade[2]= disgust;
-        grade[3]= fear;
-        grade[4]= happiness;
-        grade[5]= neutral;
-        grade[6]= sadness;
-        grade[7]= surprise;
+        grade[0] = anger;
+        grade[1] = contempt;
+        grade[2] = disgust;
+        grade[3] = fear;
+        grade[4] = happiness;
+        grade[5] = neutral;
+        grade[6] = sadness;
+        grade[7] = surprise;
         return grade;
     }
-
-
     public String processImage(String inputImageUrl) {
-        String memeOutUrl = new String();
-
+        String memeOutUrl;
+        PicProcessor pp = new PicProcessor();
+        String emo = pp.getEmotions(inputImageUrl);
+        double[] emotions = pp.getArray(emo);
+        SearchService ss = new SearchService();
+        String temp = ss.getUrl(emotions);
+        memeOutUrl = pp.getPicAPI(inputImageUrl, temp);
         return memeOutUrl;
     }
     public String getPicAPI(String picURL, String template){
@@ -89,7 +91,7 @@ public class PicProcessor {
                     .header("content-type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW")
                     .header("cache-control", "no-cache")
                     .header("Postman-Token", "9e3972c7-f1da-412f-a9f2-8bf332ae2d71")
-                    .body("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image_url[1]\"\r\n\r\nhttp://pluspng.com/img-png/png-surprised-300-300-in-surprised-girl-300.png\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"template_name\"\r\n\r\n0F30520C-2405-6424-71E6-CD28559403C0\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--")
+                    .body("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image_url[1]\"\r\n\r\n"+picURL+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"template_name\"\r\n\r\n"+template+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--")
                     .asString();
             newPicUrl = response.getBody();
             }
