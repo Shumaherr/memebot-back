@@ -76,7 +76,6 @@ public class PicProcessor {
     }
     public String processImage(String inputImageUrl) {
         String memeOutUrl;
-
         String emo = this.getEmotions(inputImageUrl);
         double[] emotions = this.getArray(emo);
         SearchService ss = new SearchService();
