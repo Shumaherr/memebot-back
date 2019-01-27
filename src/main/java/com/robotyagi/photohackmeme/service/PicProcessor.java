@@ -1,16 +1,15 @@
 package com.robotyagi.photohackmeme.service;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
 import org.json.JSONObject;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.*;
 
 public class PicProcessor {
 
@@ -79,35 +78,14 @@ public class PicProcessor {
 
     public String getPicAPI(String picURL, String template){
         String newPicUrl ="";
-        final String body = "";
         try {
-            HttpURLConnection connection = null;
-            URL url = new URL("http://api-soft.photolab.me/template_process.php");
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setUseCaches(false);
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
-            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-   //         urlParameters.add(new BasicNameValuePair("image_url[1]", picURL));
-   //         urlParameters.add(new BasicNameValuePair("template_name", template));
-            DataOutputStream os = new DataOutputStream (
-                    connection.getOutputStream());
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write("");
-            os.close();
-            InputStream is = connection.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
-            }
-            newPicUrl=response.toString();
-            br.close();
+            HttpResponse<String> response = Unirest.post("http://api-soft.photolab.me/template_process.php")
+                    .header("content-type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW")
+                    .header("cache-control", "no-cache")
+                    .header("Postman-Token", "9e3972c7-f1da-412f-a9f2-8bf332ae2d71")
+                    .body("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image_url[1]\"\r\n\r\nhttp://pluspng.com/img-png/png-surprised-300-300-in-surprised-girl-300.png\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"template_name\"\r\n\r\n0F30520C-2405-6424-71E6-CD28559403C0\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--")
+                    .asString();
+            newPicUrl = response.getBody();
             }
         catch(Exception e){System.out.println(e); }
         return newPicUrl;
