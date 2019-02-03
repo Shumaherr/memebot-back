@@ -13,10 +13,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.Channels;
@@ -48,7 +45,19 @@ public class Bot extends TelegramLongPollingBot {
             if (message.getText().equals("/help"))
                 sendMsg(message, "Привет, я подберу мем, отражающий твои эмоции. Отправь мне фото");
             else
-                sendMsg(message, "Я не знаю что ответить на это");
+            {
+                SendPhoto sendPhotoRequest = new SendPhoto();
+                sendPhotoRequest.setChatId(message.getChatId().toString());
+                try {
+                    sendPhotoRequest.setPhoto(FileService.getStaticImage("risovach.ru.png"));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (StorageException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         if(message.hasPhoto())
         {
