@@ -50,11 +50,14 @@ public class Bot extends TelegramLongPollingBot {
                 sendPhotoRequest.setChatId(message.getChatId().toString());
                 try {
                     sendPhotoRequest.setPhoto(FileService.getStaticImage("risovach.ru.png"));
+                    sendPhoto(sendPhotoRequest);
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 } catch (InvalidKeyException e) {
                     e.printStackTrace();
                 } catch (StorageException e) {
+                    e.printStackTrace();
+                } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
             }
