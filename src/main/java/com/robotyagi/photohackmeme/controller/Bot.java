@@ -1,4 +1,4 @@
-package com.robotyagi.photohackmeme.model;
+package com.robotyagi.photohackmeme.controller;
 
 import com.microsoft.azure.storage.StorageException;
 import com.robotyagi.photohackmeme.service.FileService;
@@ -69,6 +69,7 @@ public class Bot extends TelegramLongPollingBot {
                 System.out.println(o.getFileId());
 
             }
+            //TODO Перенести извлечение фото в MessageService. Файл не сохраняем, передаем в PicProcessor
             try {
                 DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                 Date date = new Date();

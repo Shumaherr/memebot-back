@@ -1,5 +1,6 @@
 package com.robotyagi.photohackmeme.service;
 
+import com.robotyagi.photohackmeme.controller.Bot;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.objects.Message;
@@ -17,23 +18,23 @@ public class MessageService {
         return url ;
     }
 
-    public boolean sendMessage(String chatId, String photo, String text)
+    public boolean sendMessage(Bot bot, String chatId, String photo, String text)
     {
         SendPhoto sendPhotoRequest = new SendPhoto();
         sendPhotoRequest.setChatId(chatId);
         sendPhotoRequest.setPhoto(photo);
         sendPhotoRequest.setCaption(text);
-        /* try {
-            sendPhoto(sendPhotoRequest);
+        try {
+            bot.sendPhoto(sendPhotoRequest);
 
         } catch (TelegramApiException e) {
             e.printStackTrace();
-        } */
+        }
         return true;
     }
 
-    public boolean sendMessage(String chatId, String photo) {
-        return sendMessage(chatId, photo, "");
+    public boolean sendMessage(Bot bot, String chatId, String photo) {
+        return sendMessage(bot, chatId, photo, "");
     }
 
 }

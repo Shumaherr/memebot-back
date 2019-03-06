@@ -1,21 +1,17 @@
 package com.robotyagi.photohackmeme.service;
 import com.microsoft.azure.storage.*;
 import com.microsoft.azure.storage.file.*;
-import com.robotyagi.photohackmeme.model.Bot;
+import com.robotyagi.photohackmeme.controller.Bot;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @Component
 public class FileService {

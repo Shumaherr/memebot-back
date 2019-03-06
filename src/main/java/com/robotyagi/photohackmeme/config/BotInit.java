@@ -1,6 +1,6 @@
 package com.robotyagi.photohackmeme.config;
 
-import com.robotyagi.photohackmeme.model.Bot;
+import com.robotyagi.photohackmeme.controller.Bot;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
