@@ -2,6 +2,8 @@ package com.robotyagi.photohackmeme.service;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
+import com.robotyagi.photohackmeme.model.Memes;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 
@@ -17,10 +19,11 @@ import java.util.List;
 
 public class PicProcessor {
 
-    public String getEmotions(String pictureurl) {
+    public JSONObject getEmotions(String pictureurl) {
         final String body = "{\"url\": \"" + pictureurl + "\"}";
 
-            String response = "";
+            String response = new String();
+            JSONObject emo = new JSONObject();
             try {
                 URL url = new URL("https://francecentral.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=false&returnFaceLandmarks=false&returnFaceAttributes=emotion");
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -44,16 +47,16 @@ public class PicProcessor {
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
                     response = br.readLine();
-
+                    emo = new JSONArray(response).getJSONObject(0).getJSONObject("faceAttributes").getJSONObject("emotion");
                 } else {
-                    response = "Error Registering";
+                    emo = new JSONObject("{\"Error\" : \"Error Registering\"}");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return response;
+            return emo;
     }
-
+//TODO Rework
     public double[] getArray(String jsonin) {
         String objin = jsonin.substring(1, jsonin.length() - 1);
         JSONObject obj = new JSONObject(objin).getJSONObject("faceAttributes");

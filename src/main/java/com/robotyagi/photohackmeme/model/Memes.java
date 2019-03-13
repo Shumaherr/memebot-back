@@ -1,5 +1,6 @@
 package com.robotyagi.photohackmeme.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 public class Memes {
 
     @Id
+    @JsonIgnore
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "meme_seq")
     @SequenceGenerator(name = "meme_seq", sequenceName = "meme_seq", allocationSize = 1)
