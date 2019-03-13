@@ -13,6 +13,9 @@ import java.net.URL;
 public class MessageService {
 
 
+    public MessageService(Object s, Bot bot) {
+    }
+
     public URL getPhotoFromMessage(Message message) throws MalformedURLException {
         URL url = new URL("");
         return url ;
@@ -36,5 +39,7 @@ public class MessageService {
     public boolean sendMessage(Bot bot, String chatId, String photo) {
         return sendMessage(bot, chatId, photo, "");
     }
+
+
 
 }

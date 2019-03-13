@@ -2,6 +2,7 @@ package com.robotyagi.photohackmeme.controller;
 
 import com.microsoft.azure.storage.StorageException;
 import com.robotyagi.photohackmeme.service.FileService;
+import com.robotyagi.photohackmeme.service.MessageService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ import java.util.Date;
 @Service
 public class Bot extends TelegramLongPollingBot {
 
+    @Autowired
+    MessageService messageService;
     @Override
     public String getBotUsername() {
         return "memeficator_bot";
@@ -71,9 +74,7 @@ public class Bot extends TelegramLongPollingBot {
             }
             //TODO Перенести извлечение фото в MessageService. Файл не сохраняем, передаем в PicProcessor
             try {
-                DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-                Date date = new Date();
-                String fileOutName = "photo" + dateFormat.format(date) + ".jpg" ;
+                messageService = new MessageService(message, this);
                 ArrayList<String> memesArr = FileService.uploadFile(fileOutName, message.getPhoto().get(message.getPhoto().size() - 1).getFileId(), this, message.getPhoto().size());
                 String memes = memesArr.get(0);
                 String text = memesArr.get(1);
