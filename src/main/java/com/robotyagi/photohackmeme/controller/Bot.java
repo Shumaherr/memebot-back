@@ -74,7 +74,7 @@ public class Bot extends TelegramLongPollingBot {
             }
             //TODO Перенести извлечение фото в MessageService. Файл не сохраняем, передаем в PicProcessor
             try {
-                messageService = new MessageService(message, this);
+                messageService = new MessageService();
                 ArrayList<String> memesArr = FileService.uploadFile(fileOutName, message.getPhoto().get(message.getPhoto().size() - 1).getFileId(), this, message.getPhoto().size());
                 String memes = memesArr.get(0);
                 String text = memesArr.get(1);

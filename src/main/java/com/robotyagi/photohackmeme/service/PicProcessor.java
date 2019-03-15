@@ -1,10 +1,14 @@
 package com.robotyagi.photohackmeme.service;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.robotyagi.photohackmeme.model.Memes;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 
 
 import javax.imageio.ImageIO;
@@ -19,9 +23,13 @@ import java.util.List;
 
 public class PicProcessor {
 
+    @Value("${microsoft.api.cognitive.key}")
+    private String apiKey;
+
     public JSONObject getEmotions(String pictureurl) {
         final String body = "{\"url\": \"" + pictureurl + "\"}";
-
+        ObjectMapper objectMapper = new ObjectMapper();
+        Memes selfie = new Memes();
             String response = new String();
             JSONObject emo = new JSONObject();
             try {
@@ -33,7 +41,7 @@ public class PicProcessor {
                 con.setDoInput(true);
                 con.setDoOutput(true);
                 con.setRequestProperty("Content-Type", "application/json");
-                con.setRequestProperty("Ocp-Apim-Subscription-Key", "fd3c1e04a97947a4acf0d88024b1b518");
+                con.setRequestProperty("Ocp-Apim-Subscription-Key", apiKey);
 
                 OutputStream os = con.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
@@ -54,7 +62,17 @@ public class PicProcessor {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return emo;
+            try
+            {
+                selfie = objectMapper.readValue(emo.toString(), Memes.class);
+            } catch (JsonParseException e) {
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        return emo;
     }
 //TODO Rework
     public double[] getArray(String jsonin) {
@@ -82,7 +100,7 @@ public class PicProcessor {
         return grade;
     }
     public ArrayList<String> processImage(String inputImageUrl) {
-        String emo = this.getEmotions(inputImageUrl);
+        String emo = this.getEmotions(inputImageUrl).toString();
         double[] emotions = this.getArray(emo);
         SearchService ss = new SearchService();
         ArrayList<String> returnlist = ss.getUrl(emotions);
