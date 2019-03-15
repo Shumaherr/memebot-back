@@ -1,6 +1,7 @@
 package com.robotyagi.photohackmeme.controller;
 
 import com.microsoft.azure.storage.StorageException;
+import com.robotyagi.photohackmeme.model.Memes;
 import com.robotyagi.photohackmeme.service.FileService;
 import com.robotyagi.photohackmeme.service.MessageService;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ public class Bot extends TelegramLongPollingBot {
             {
                 SendPhoto sendPhotoRequest = new SendPhoto();
                 sendPhotoRequest.setChatId(message.getChatId().toString());
-                try {
+               /* try {
                     sendPhotoRequest.setPhoto(FileService.getStaticImage("risovach.ru.png"));
                     sendPhoto(sendPhotoRequest);
                 } catch (URISyntaxException e) {
@@ -62,22 +63,18 @@ public class Bot extends TelegramLongPollingBot {
                     e.printStackTrace();
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         }
         if(message.hasPhoto())
         {
-            for(PhotoSize o:message.getPhoto())
-            {
-                System.out.println(o.getFileId());
+            PhotoSize o = message.getPhoto().get(0);
 
-            }
-            //TODO Перенести извлечение фото в MessageService. Файл не сохраняем, передаем в PicProcessor
             try {
                 messageService = new MessageService();
-                ArrayList<String> memesArr = FileService.uploadFile(fileOutName, message.getPhoto().get(message.getPhoto().size() - 1).getFileId(), this, message.getPhoto().size());
-                String memes = memesArr.get(0);
-                String text = memesArr.get(1);
+                String response = messageService.getPhotoFromMessage(o.getFileId(), this.getBotToken());
+                String memes = new String();
+                String text = new String();
                 SendPhoto sendPhotoRequest = new SendPhoto();
                 sendPhotoRequest.setChatId(message.getChatId().toString());
                 sendPhotoRequest.setPhoto(memes);
@@ -90,12 +87,6 @@ public class Bot extends TelegramLongPollingBot {
                     e.printStackTrace();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (StorageException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
                 e.printStackTrace();
             }
 
