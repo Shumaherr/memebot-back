@@ -96,9 +96,6 @@ public class PicProcessor {
         String newPicUrl =new String();
         try {
             HttpResponse<String> response = Unirest.post("http://api-soft.photolab.me/template_process.php")
-                    .header("content-type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW")
-                    .header("cache-control", "no-cache")
-                    .header("Postman-Token", "9e3972c7-f1da-412f-a9f2-8bf332ae2d71")
                     .body("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image_url[1]\"\r\n\r\n"+picURL+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"template_name\"\r\n\r\n"+template+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--")
                     .asString();
             newPicUrl = response.getBody();
