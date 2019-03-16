@@ -3,6 +3,7 @@ package com.robotyagi.photohackmeme.service;
 import com.robotyagi.photohackmeme.controller.Bot;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.objects.Message;
@@ -15,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Vector;
 
+@Configurable
 @Service
 public class MessageService {
 

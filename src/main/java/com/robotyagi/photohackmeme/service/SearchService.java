@@ -4,6 +4,7 @@ import com.robotyagi.photohackmeme.model.Memes;
 import com.robotyagi.photohackmeme.repository.MemesRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+@Configurable
 @Service
 public class SearchService {
 
