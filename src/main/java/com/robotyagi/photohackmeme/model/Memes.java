@@ -16,32 +16,33 @@ public class Memes {
     @SequenceGenerator(name = "meme_seq", sequenceName = "meme_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "ANGER")
+    @Column(name = "anger")
     private Double anger;
 
-    @Column(name = "CONTEMPT")
+    @Column(name = "contempt")
     private Double contempt;
 
-    @Column(name = "DISGUST")
+    @Column(name = "disgust")
     private Double disgust;
 
-    @Column(name = "FEAR")
+    @Column(name = "fear")
     private Double fear;
 
-    @Column(name = "HAPPINESS")
+    @Column(name = "happiness")
     private Double happiness;
 
-    @Column(name = "NEUTRAL")
+    @Column(name = "neutral")
     private Double neutral;
 
-    @Column(name = "SADNESS")
+    @Column(name = "sadness")
     private Double sadness;
 
-    @Column(name = "SURPRISE")
+    @Column(name = "surprise")
     private Double surprise;
 
-    @Column(name = "FILENAME")
-    private String filename;
+    @Column(name = "url")
+    private String url;
+
 
     public Long getId() {
         return id;
@@ -115,11 +116,11 @@ public class Memes {
         this.surprise = surprise;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getUrl() {
+        return url;
     }
 
     public void setFilename(String filename) {
-        this.filename = filename;
+        this.url = filename;
     }
 }

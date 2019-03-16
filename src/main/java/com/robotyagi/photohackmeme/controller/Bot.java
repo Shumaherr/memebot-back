@@ -1,10 +1,6 @@
 package com.robotyagi.photohackmeme.controller;
 
-import com.microsoft.azure.storage.StorageException;
-import com.robotyagi.photohackmeme.model.Memes;
-import com.robotyagi.photohackmeme.service.FileService;
 import com.robotyagi.photohackmeme.service.MessageService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -15,16 +11,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.security.InvalidKeyException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 
 @Service
@@ -69,26 +56,16 @@ public class Bot extends TelegramLongPollingBot {
         if(message.hasPhoto())
         {
             PhotoSize o = message.getPhoto().get(0);
-
-            try {
-                messageService = new MessageService();
-                String response = messageService.getPhotoFromMessage(o.getFileId(), this.getBotToken());
-                String memes = new String();
-                String text = new String();
+                Vector<String> result = messageService.getMessageResponse(o.getFileId(), this.getBotToken());
                 SendPhoto sendPhotoRequest = new SendPhoto();
                 sendPhotoRequest.setChatId(message.getChatId().toString());
-                sendPhotoRequest.setPhoto(memes);
-                String result = Double.parseDouble(text) >=80.0d?"% Хороший результат!!111" : "% Так себе!(";
-                sendPhotoRequest.setCaption("Вы меметичны на " + text + result);
+                sendPhotoRequest.setPhoto(result.get(0));
                 try {
                     sendPhoto(sendPhotoRequest);
 
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
         }
     }

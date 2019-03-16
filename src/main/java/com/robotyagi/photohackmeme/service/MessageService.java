@@ -2,6 +2,7 @@ package com.robotyagi.photohackmeme.service;
 
 import com.robotyagi.photohackmeme.controller.Bot;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.objects.Message;
@@ -12,11 +13,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Vector;
 
 @Service
 public class MessageService {
 
-    public String getPhotoFromMessage(String token, String fileId) throws MalformedURLException {
+    @Autowired
+    PicProcessor picProcessor;
+
+    private String getPhotoFromMessage(String token, String fileId) throws MalformedURLException {
         URL url = new URL("https://api.telegram.org/bot"+token+"/getFile?file_id="+fileId);
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -31,25 +36,20 @@ public class MessageService {
         }
     }
 
-    public boolean sendMessage(Bot bot, String chatId, String photo, String text)
-    {
-        SendPhoto sendPhotoRequest = new SendPhoto();
-        sendPhotoRequest.setChatId(chatId);
-        sendPhotoRequest.setPhoto(photo);
-        sendPhotoRequest.setCaption(text);
+    private String getPhotoResponse(String token, String fileId) {
+        String photoUrl = new String();
         try {
-            bot.sendPhoto(sendPhotoRequest);
-
-        } catch (TelegramApiException e) {
+            photoUrl = getPhotoFromMessage(token, fileId);
+        } catch (MalformedURLException e) {
             e.printStackTrace();
+            return null;
         }
-        return true;
+        return picProcessor.getResultImage(photoUrl);
     }
+    public Vector<String> getMessageResponse(String token, String fileId) {
+        Vector<String> response = new Vector<>();
+        response.add(getPhotoResponse(token, fileId));
 
-    public boolean sendMessage(Bot bot, String chatId, String photo) {
-        return sendMessage(bot, chatId, photo, "");
+        return response;
     }
-
-
-
 }

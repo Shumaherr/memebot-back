@@ -8,7 +8,9 @@ import com.mashape.unirest.http.Unirest;
 import com.robotyagi.photohackmeme.model.Memes;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 
 import javax.imageio.ImageIO;
@@ -21,12 +23,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class PicProcessor {
+
+    @Autowired
+    SearchService searchService;
 
     @Value("${microsoft.api.cognitive.key}")
     private String apiKey;
 
-    public JSONObject getEmotions(String pictureurl) {
+    private Memes getEmotions(String pictureurl) {
         final String body = "{\"url\": \"" + pictureurl + "\"}";
         ObjectMapper objectMapper = new ObjectMapper();
         Memes selfie = new Memes();
@@ -72,44 +78,20 @@ public class PicProcessor {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        return emo;
+        return selfie;
     }
-//TODO Rework
-    public double[] getArray(String jsonin) {
-        String objin = jsonin.substring(1, jsonin.length() - 1);
-        JSONObject obj = new JSONObject(objin).getJSONObject("faceAttributes");
-        JSONObject emotion = obj.getJSONObject("emotion");
-        double anger = emotion.getDouble("anger");
-        double contempt = emotion.getDouble("contempt");
-        double disgust = emotion.getDouble("disgust");
-        double fear = emotion.getDouble("fear");
-        double happiness = emotion.getDouble("happiness");
-        double neutral = emotion.getDouble("neutral");
-        double sadness = emotion.getDouble("sadness");
-        double surprise = emotion.getDouble("surprise");
 
-        double[] grade = new double[8];
-        grade[0] = anger;
-        grade[1] = contempt;
-        grade[2] = disgust;
-        grade[3] = fear;
-        grade[4] = happiness;
-        grade[5] = neutral;
-        grade[6] = sadness;
-        grade[7] = surprise;
-        return grade;
+    public String getResultImage(String pictureurl) {
+        String imageString = new String();
+        Memes emotions = getEmotions(pictureurl);
+        String template = searchService.getNearestMeme(emotions);
+        imageString = getPicAPI(pictureurl, template);
+
+        return imageString;
     }
-    public ArrayList<String> processImage(String inputImageUrl) {
-        String emo = this.getEmotions(inputImageUrl).toString();
-        double[] emotions = this.getArray(emo);
-        SearchService ss = new SearchService();
-        ArrayList<String> returnlist = ss.getUrl(emotions);
-        String memeOutUrl = this.getPicAPI(inputImageUrl, returnlist.get(0));
-        returnlist.set(0,memeOutUrl);
-        return returnlist;
-    }
+
     public String getPicAPI(String picURL, String template){
-        String newPicUrl ="";
+        String newPicUrl =new String();
         try {
             HttpResponse<String> response = Unirest.post("http://api-soft.photolab.me/template_process.php")
                     .header("content-type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW")
@@ -118,31 +100,10 @@ public class PicProcessor {
                     .body("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image_url[1]\"\r\n\r\n"+picURL+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"template_name\"\r\n\r\n"+template+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--")
                     .asString();
             newPicUrl = response.getBody();
-            }
-        catch(Exception e){System.out.println(e); }
+        }
+        catch(Exception e){e.printStackTrace(); }
         return newPicUrl;
     }
 
-    public OutputStream getCert (int index, InputStream is)
-    {
-        InputStream ismain = is;
-        BufferedImage read = null;
-        try {
-            read = ImageIO.read(ismain);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Graphics g = read.getGraphics();
-        g.setColor(Color.BLACK);
-        g.drawString("Hello world ",7, 55);
-        g.dispose();
-        OutputStream os = null;
-        try {
-            ImageIO.write(read, "jpg", new File("image.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return os;
-    }
 }
 
