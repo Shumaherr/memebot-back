@@ -121,7 +121,7 @@ public class Memes {
         return url;
     }
 
-    public void setFilename(String filename) {
-        this.url = filename;
+    public void setFilename(String url) {
+        this.url = url;
     }
 }

@@ -26,8 +26,7 @@ import java.util.List;
 @Service
 public class PicProcessor {
 
-    @Autowired
-    SearchService searchService;
+    private SearchService searchService = new SearchService();
 
     @Value("${microsoft.api.cognitive.key}")
     private String apiKey;
