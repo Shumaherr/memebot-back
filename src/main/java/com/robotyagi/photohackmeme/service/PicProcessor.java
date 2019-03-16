@@ -28,8 +28,8 @@ public class PicProcessor {
 
     private SearchService searchService = new SearchService();
 
-    @Value("${microsoft.api.cognitive.key}")
-    private String apiKey;
+    //@Value("${microsoft.api.cognitive.key}")
+    private String apiKey = "49ede4b965594f68a165b726a5d7d5e6";
 
     private Memes getEmotions(String pictureurl) {
         final String body = "{\"url\": \"" + pictureurl + "\"}";
@@ -57,11 +57,14 @@ public class PicProcessor {
                 writer.close();
                 os.close();
                 int responseCode = con.getResponseCode();
-                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                System.out.print(responseCode);
+                if (responseCode == HttpsURLConnection.HTTP_OK)
+                {
                     BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
                     response = br.readLine();
                     emo = new JSONArray(response).getJSONObject(0).getJSONObject("faceAttributes").getJSONObject("emotion");
-                } else {
+                }
+                else {
                     emo = new JSONObject("{\"Error\" : \"Error Registering\"}");
                 }
             } catch (Exception e) {
