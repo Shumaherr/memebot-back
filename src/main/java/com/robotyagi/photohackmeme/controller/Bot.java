@@ -55,7 +55,13 @@ public class Bot extends TelegramLongPollingBot {
         }
         if(message.hasPhoto())
         {
-            PhotoSize o = message.getPhoto().get(0);
+            for(PhotoSize o : message.getPhoto())
+            {
+                if (o.getFileId()!=null)
+                {
+                    break;
+                }
+            }
                 Vector<String> result = messageService.getMessageResponse(o.getFileId(), this.getBotToken());
                 SendPhoto sendPhotoRequest = new SendPhoto();
                 sendPhotoRequest.setChatId(message.getChatId().toString());
