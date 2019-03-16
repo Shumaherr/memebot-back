@@ -24,6 +24,7 @@ public class SearchService {
 
     @Autowired
     MemesRepository memerepo;
+
     public String getNearestMeme(Memes memes) {
         List<Memes> allMemes = new ArrayList();
         allMemes = memerepo.findAll();
