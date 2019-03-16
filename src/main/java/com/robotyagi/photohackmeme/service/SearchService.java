@@ -31,7 +31,7 @@ public class SearchService {
         props.setProperty("user", "postgreadmin");
         props.setProperty("password", "memebotdb");
         props.setProperty("ssl", "false");
-        List<Memes> memesAll = new ArrayList<>();
+        List<Memes> allMemes = new ArrayList<>();
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -52,7 +52,7 @@ public class SearchService {
                         mem.setNeutral(rs.getDouble("neutral"));
                         mem.setSadness(rs.getDouble("sadness"));
                         mem.setSurprise(rs.getDouble("surprise"));
-                        memesAll.add(mem);
+                        allMemes.add(mem);
                     }
                     else {
                         break;
@@ -68,8 +68,8 @@ public class SearchService {
             System.out.println("DB error: " + e);
         }
     //TEMP!!!!!
-        List<Memes> allMemes = new ArrayList();
-        allMemes = memerepo.findAll();
+        /*List<Memes> allMemes = new ArrayList();
+        allMemes = memerepo.findAll();*/
 
         int index = SearchSmallestDistanceObject(allMemes, memes);
         return allMemes.get(index).getUrl();
