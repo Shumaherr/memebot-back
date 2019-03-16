@@ -12,8 +12,7 @@ public class Memes {
     @Id
     @JsonIgnore
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "meme_seq")
-    @SequenceGenerator(name = "meme_seq", sequenceName = "meme_seq", allocationSize = 1)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @Column(name = "anger")
