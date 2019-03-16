@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "MEMELIB")
+@Table(name = "memelib")
 public class Memes {
 
     @Id
@@ -40,6 +40,7 @@ public class Memes {
     @Column(name = "surprise")
     private Double surprise;
 
+    @JsonIgnore
     @Column(name = "url")
     private String url;
 
