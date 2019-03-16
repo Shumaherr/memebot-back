@@ -61,6 +61,10 @@ public class Bot extends TelegramLongPollingBot {
                 SendPhoto sendPhotoRequest = new SendPhoto();
                 sendPhotoRequest.setChatId(message.getChatId().toString());
                 sendPhotoRequest.setPhoto(result.get(0));
+
+                System.out.print(result.get(0));
+                
+
                 try {
                     sendPhoto(sendPhotoRequest);
 
