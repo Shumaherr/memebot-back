@@ -19,8 +19,6 @@ import java.util.*;
 @Component
 public class Bot extends TelegramLongPollingBot {
 
-    @Autowired
-    MessageService messageService;
     @Override
     public String getBotUsername() {
         return "memeficator_bot";
@@ -57,6 +55,7 @@ public class Bot extends TelegramLongPollingBot {
         }
         if(message.hasPhoto())
         {
+            MessageService messageService = new MessageService();
                 System.out.print(messageService);
                 Vector<String> result = messageService.getMessageResponse(this.getBotToken(), message.getPhoto().get(message.getPhoto().size() - 1).getFileId());
                 SendPhoto sendPhotoRequest = new SendPhoto();
