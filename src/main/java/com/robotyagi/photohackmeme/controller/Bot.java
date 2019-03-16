@@ -3,6 +3,7 @@ package com.robotyagi.photohackmeme.controller;
 import com.robotyagi.photohackmeme.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
@@ -15,7 +16,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import java.util.*;
 
 @Configurable
-@Service
+@Component
 public class Bot extends TelegramLongPollingBot {
 
     @Autowired
