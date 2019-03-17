@@ -34,7 +34,7 @@ public class TextProcessor {
 
     public ArrayList<String> getTemplateByKeywords(String text) {
         ArrayList<String> returnList = new ArrayList<String>();
-        String[] words = text.replaceAll("\\.", " " ).split("\\s+");
+        String[] words = text.replaceAll("\\.|!|,|\\?", " " ).split("\\s+");
         List<String> wordList = new ArrayList<>();
         Collections.addAll(wordList, words);
         String mergedText = new String();
