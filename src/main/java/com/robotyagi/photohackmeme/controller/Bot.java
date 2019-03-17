@@ -63,7 +63,7 @@ public class Bot extends TelegramLongPollingBot {
                 sendPhotoRequest.setPhoto(result.get(0));
 
                 System.out.print(result.get(0));
-                
+
 
                 try {
                     sendPhoto(sendPhotoRequest);

@@ -26,7 +26,8 @@ import java.util.List;
 @Service
 public class PicProcessor {
 
-    private SearchService searchService = new SearchService();
+    @Autowired
+    private SearchService searchService;
 
     //@Value("${microsoft.api.cognitive.key}")
     private String apiKey = "49ede4b965594f68a165b726a5d7d5e6";
@@ -96,7 +97,9 @@ public class PicProcessor {
         String newPicUrl =new String();
         try {
             HttpResponse<String> response = Unirest.post("http://api-soft.photolab.me/template_process.php")
-                    .body("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image_url[1]\"\r\n\r\n"+picURL+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"template_name\"\r\n\r\n"+template+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--")
+                    .field("image_url[1]", picURL)
+                    .field("template_name", template)
+                    //.body("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image_url[1]\"\r\n\r\n"+picURL+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"template_name\"\r\n\r\n"+template+"\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--")
                     .asString();
             newPicUrl = response.getBody();
         }

@@ -11,4 +11,9 @@ public interface MemesRepository extends JpaRepository<Memes, Long> {
 
     @Override
     List<Memes> findAll();
+
+    List<Memes> findAllByUrlIsNotNull();
+
+    @Override
+    Memes saveAndFlush(Memes m);
 }

@@ -5,6 +5,7 @@ import com.robotyagi.photohackmeme.repository.MemesRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,15 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-@Configurable
-@Service
+@Component
 public class SearchService {
 
     @Autowired
     MemesRepository memerepo;
 
     public String getNearestMeme(Memes memes) {
-    //TEMP!!!!!
+    /*//TEMP!!!!!
         Properties props = new Properties();
         props.setProperty("user", "postgreadmin");
         props.setProperty("password", "memebotdb");
@@ -67,9 +67,11 @@ public class SearchService {
         } catch (Exception e) {
             System.out.println("DB error: " + e);
         }
-    //TEMP!!!!!
-        /*List<Memes> allMemes = new ArrayList();
-        allMemes = memerepo.findAll();*/
+    //TEMP!!!!!*/
+
+        List<Memes> allMemes = new ArrayList();
+        System.out.print(memerepo.findAllByUrlIsNotNull());
+        allMemes = memerepo.findAll();
 
         int index = SearchSmallestDistanceObject(allMemes, memes);
         return allMemes.get(index).getUrl();

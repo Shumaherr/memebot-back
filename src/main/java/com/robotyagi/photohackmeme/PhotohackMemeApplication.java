@@ -15,7 +15,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 //@Configuration
 //@EnableAutoConfiguration
 //@ComponentScan
-//@EnableJpaRepositories
+@EnableJpaRepositories
 @SpringBootApplication
 public class PhotohackMemeApplication {
 

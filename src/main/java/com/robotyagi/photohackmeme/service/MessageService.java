@@ -19,8 +19,8 @@ import java.util.Vector;
 @Configurable
 @Service
 public class MessageService {
-
-    private PicProcessor picProcessor = new PicProcessor();
+    @Autowired
+    PicProcessor picProcessor;
 
     private String getPhotoFromMessage(String token, String fileId) throws MalformedURLException {
         URL url = new URL("https://api.telegram.org/bot"+token+"/getFile?file_id="+fileId);
