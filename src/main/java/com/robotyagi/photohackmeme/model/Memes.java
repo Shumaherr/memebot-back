@@ -44,6 +44,43 @@ public class Memes {
     private String url;
 
 
+    @JsonIgnore
+    @Column(name = "description")
+    private String description;
+
+    @JsonIgnore
+    @Column(name = "description_vect")
+    private String description_vect;
+
+    @JsonIgnore
+    @Column(name = "mean")
+    private String mean;
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription_vect() {
+        return description_vect;
+    }
+
+    public void setDescription_vect(String description_vect) {
+        this.description_vect = description_vect;
+    }
+
+    public String getMean() {
+        return mean;
+    }
+
+    public void setMean(String mean) {
+        this.mean = mean;
+    }
+
     public Long getId() {
         return id;
     }

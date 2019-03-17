@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Vector;
 
 @Configurable
@@ -21,6 +22,8 @@ import java.util.Vector;
 public class MessageService {
     @Autowired
     PicProcessor picProcessor;
+    @Autowired
+    TextProcessor textProcessor;
 
     private String getPhotoFromMessage(String token, String fileId) throws MalformedURLException {
         URL url = new URL("https://api.telegram.org/bot"+token+"/getFile?file_id="+fileId);
@@ -47,18 +50,52 @@ public class MessageService {
         }
         return picProcessor.getResultImage(photoUrl);
     }
-    public Vector<String> getMessageResponse(String token, String fileId) {
+    /*public Vector<String> getMessageResponse(String token, String fileId) {
         Vector<String> response = new Vector<>();
         response.add(getPhotoResponse(token, fileId));
 
         return response;
-    }
+    }*/
 
-    public Vector<String> getMessageResponse(String photoUrl)
+    public Vector<String> getMessageResponse(String photoUrl, String text)
     {
         Vector<String> response = new Vector<>();
-        response.add(picProcessor.getResultImage(photoUrl));
-
+        String template = new String();
+        JSONObject textEmoJson = new JSONObject(textProcessor.getTextEmotion(text));
+        ArrayList<String> textTemplates = textProcessor.getTemplateByKeywords(text);
+        if(textTemplates.isEmpty()) {
+            switch (textEmoJson.getJSONObject("emotion").getString("emotion")) {
+                case "Happy":
+                    template = "10000160"; //ГОВНО
+                    break;
+                case "Fear":
+                    template = "10000166";
+                    break;
+                case "Sad":
+                    template = "10000127";
+                    break;
+                case "Angry":
+                    template = "10000163";
+                    break;
+                case "Bored":
+                    template = "0";
+                    break;
+                case "Excited":
+                    template = "10000160";
+                    break;
+                default:
+                    template = "0";
+            }
+            if (!template.equals("0")) {
+                photoUrl = picProcessor.getPicAPI(photoUrl, template);
+            }
+            response.add(picProcessor.getResultImage(photoUrl));
+        }
+        else
+            for(String url : textTemplates)
+            {
+                response.add(picProcessor.getPicAPI(photoUrl, url));
+            }
         return response;
     }
 

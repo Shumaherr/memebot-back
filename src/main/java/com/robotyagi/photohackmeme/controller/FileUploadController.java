@@ -31,7 +31,7 @@ public class FileUploadController {
                 e.printStackTrace();
                 return ResponseEntity.badRequest().build();
             }
-        Vector<String> result = messageService.getMessageResponse(fileUrl);
+        Vector<String> result = messageService.getMessageResponse(fileUrl, text);
             return ResponseEntity.ok(result);
     }
 }
