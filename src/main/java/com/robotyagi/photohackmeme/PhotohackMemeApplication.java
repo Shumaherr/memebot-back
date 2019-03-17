@@ -12,20 +12,21 @@ import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan
-@EnableJpaRepositories
+//@Configuration
+//@EnableAutoConfiguration
+//@ComponentScan
+//@EnableJpaRepositories
+@SpringBootApplication
 public class PhotohackMemeApplication {
 
 	public static void main(String[] args) {
-		ApiContextInitializer.init();
+		/*ApiContextInitializer.init();
 		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 		try {
 			telegramBotsApi.registerBot(new Bot());
 		} catch (TelegramApiException e) {
 			e.printStackTrace();
-		}
+		}*/
 		SpringApplication.run(PhotohackMemeApplication.class, args);
 	}
 

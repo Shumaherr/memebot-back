@@ -53,4 +53,13 @@ public class MessageService {
 
         return response;
     }
+
+    public Vector<String> getMessageResponse(String photoUrl)
+    {
+        Vector<String> response = new Vector<>();
+        response.add(picProcessor.getResultImage(photoUrl));
+
+        return response;
+    }
+
 }
