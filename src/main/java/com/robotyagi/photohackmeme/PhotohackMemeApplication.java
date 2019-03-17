@@ -20,13 +20,8 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 public class PhotohackMemeApplication {
 
 	public static void main(String[] args) {
-		/*ApiContextInitializer.init();
-		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-		try {
-			telegramBotsApi.registerBot(this);
-		} catch (TelegramApiException e) {
-			e.printStackTrace();
-		}*/
+		ApiContextInitializer.init();
+
 		SpringApplication.run(PhotohackMemeApplication.class, args);
 	}
 
