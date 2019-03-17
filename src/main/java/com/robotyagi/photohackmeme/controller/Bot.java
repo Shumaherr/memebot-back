@@ -1,6 +1,7 @@
 package com.robotyagi.photohackmeme.controller;
 
 import com.robotyagi.photohackmeme.service.MessageService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,11 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
 @Configurable
@@ -55,9 +61,11 @@ public class Bot extends TelegramLongPollingBot {
         }
         if(message.hasPhoto())
         {
+            try {
+                PhotoSize o = message.getPhoto().get(0);
             MessageService messageService = new MessageService();
                 System.out.print(messageService);
-                Vector<String> result = messageService.getMessageResponse(this.getBotToken(), message.getPhoto().get(message.getPhoto().size() - 1).getFileId());
+            Vector<String> result = messageService.getMessageResponse(getPhotoFromMessage(this.getBotToken(), o.getFileId()), message.getText());
                 SendPhoto sendPhotoRequest = new SendPhoto();
                 sendPhotoRequest.setChatId(message.getChatId().toString());
                 sendPhotoRequest.setPhoto(result.get(0));
@@ -65,12 +73,14 @@ public class Bot extends TelegramLongPollingBot {
                 System.out.print(result.get(0));
 
 
-                try {
+
                     sendPhoto(sendPhotoRequest);
 
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
-                }
+                } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
 
         }
     }
@@ -88,6 +98,19 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-
+    private String getPhotoFromMessage(String token, String fileId) throws MalformedURLException {
+        URL url = new URL("https://api.telegram.org/bot"+token+"/getFile?file_id="+fileId);
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+            String res = in.readLine();
+            JSONObject jresult = new JSONObject(res);
+            String full_path = "https://api.telegram.org/file/bot" + token + "/" + jresult.getJSONObject("result").getString("file_path");
+            return full_path;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }
