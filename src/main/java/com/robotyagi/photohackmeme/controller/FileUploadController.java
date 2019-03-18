@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Vector;
 
 import com.robotyagi.photohackmeme.service.MessageService;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,9 @@ public class FileUploadController {
                 e.printStackTrace();
                 return ResponseEntity.badRequest().build();
             }
-        Vector<String> result = messageService.getMessageResponse(fileUrl, text);
-            return ResponseEntity.ok(result);
+        JSONArray result = messageService.getMessageResponse(fileUrl, text);
+            JSONObject bodyJSON = new JSONObject();
+            bodyJSON.put("results", result);
+            return ResponseEntity.ok(bodyJSON.toString());
     }
 }

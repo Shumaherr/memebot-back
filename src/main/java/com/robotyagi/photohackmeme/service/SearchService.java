@@ -26,51 +26,8 @@ public class SearchService {
     MemesRepository memerepo;
 
     public String getNearestMeme(Memes memes) {
-    /*//TEMP!!!!!
-        Properties props = new Properties();
-        props.setProperty("user", "postgreadmin");
-        props.setProperty("password", "memebotdb");
-        props.setProperty("ssl", "false");
-        List<Memes> allMemes = new ArrayList<>();
-
-        try {
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:postgresql://18.219.76.113:5432/memebot", props);
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT anger, contempt, disgust, fear, happiness, neutral, sadness, surprise, url FROM memelib");
-            try {
-
-                while(true)
-                {
-                    Memes mem = new Memes();
-                    if (rs.next()) { ArrayList<Double> list = new ArrayList<>();
-                       mem.setAnger(rs.getDouble("anger"));
-                        mem.setContempt(rs.getDouble("contempt"));
-                        mem.setDisgust(rs.getDouble("disgust"));
-                        mem.setFear(rs.getDouble("fear"));
-                       mem.setHappiness(rs.getDouble("happiness"));
-                        mem.setNeutral(rs.getDouble("neutral"));
-                        mem.setSadness(rs.getDouble("sadness"));
-                        mem.setSurprise(rs.getDouble("surprise"));
-                        allMemes.add(mem);
-                    }
-                    else {
-                        break;
-                    }
-
-                }
-            } catch (Exception e) {
-            }
-
-            rs.close();
-            st.close();
-        } catch (Exception e) {
-            System.out.println("DB error: " + e);
-        }
-    //TEMP!!!!!*/
 
         List<Memes> allMemes = new ArrayList();
-        System.out.print(memerepo.findAllByUrlIsNotNull());
         allMemes = memerepo.findAll();
 
         int index = SearchSmallestDistanceObject(allMemes, memes);

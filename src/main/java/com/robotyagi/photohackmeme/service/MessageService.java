@@ -1,13 +1,10 @@
 package com.robotyagi.photohackmeme.service;
 
-import com.robotyagi.photohackmeme.controller.Bot;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.api.objects.Message;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +12,6 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Vector;
 
 @Configurable
 @Service
@@ -57,9 +53,9 @@ public class MessageService {
         return response;
     }*/
 
-    public Vector<String> getMessageResponse(String photoUrl, String text)
+    public JSONArray getMessageResponse(String photoUrl, String text)
     {
-        Vector<String> response = new Vector<>();
+        JSONArray response = new JSONArray();
         String template = new String();
         JSONObject textEmoJson = new JSONObject(textProcessor.getTextEmotion(text));
         ArrayList<String> textTemplates = textProcessor.getTemplateByKeywords(text);
@@ -89,12 +85,12 @@ public class MessageService {
             if (!template.equals("0")) {
                 photoUrl = picProcessor.getPicAPI(photoUrl, template);
             }
-            response.add(picProcessor.getResultImage(photoUrl));
+            response.put(picProcessor.getResultImage(photoUrl));
         }
         else
             for(String url : textTemplates)
             {
-                response.add(picProcessor.getPicAPI(photoUrl, url));
+                response.put(picProcessor.getPicAPI(photoUrl, url));
             }
         return response;
     }
