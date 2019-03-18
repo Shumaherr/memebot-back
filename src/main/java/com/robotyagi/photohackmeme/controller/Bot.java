@@ -2,10 +2,8 @@ package com.robotyagi.photohackmeme.controller;
 
 import com.robotyagi.photohackmeme.service.MessageService;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
@@ -21,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Vector;
 
 @Configurable
 @Component
@@ -115,15 +113,5 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    @PostConstruct
-    public void registerBot(){
-
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-        try {
-            telegramBotsApi.registerBot(this);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
 
 }
