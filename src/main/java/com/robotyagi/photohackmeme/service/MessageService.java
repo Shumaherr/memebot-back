@@ -14,7 +14,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Vector;
 
-@Configurable
 @Service
 public class MessageService {
     @Autowired
@@ -58,6 +57,7 @@ public class MessageService {
     {
         Vector<String> response = new Vector<>();
         String template = new String();
+        System.out.println(textProcessor.toString() + "---" + picProcessor.toString());
         JSONObject textEmoJson = new JSONObject(textProcessor.getTextEmotion(text));
         ArrayList<String> textTemplates = textProcessor.getTemplateByKeywords(text);
         if(textTemplates.isEmpty()) {

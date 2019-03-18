@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-
 public class FileUploadController {
     @Autowired
     MessageService messageService;
