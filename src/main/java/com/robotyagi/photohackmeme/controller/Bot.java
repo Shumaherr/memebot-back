@@ -4,16 +4,14 @@ import com.robotyagi.photohackmeme.service.MessageService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.api.objects.Message;
-import org.telegram.telegrambots.api.objects.PhotoSize;
-import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.PhotoSize;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,7 +19,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Vector;
 
-@Configurable
 @Component
 public class Bot extends TelegramLongPollingBot {
 
@@ -71,10 +68,7 @@ public class Bot extends TelegramLongPollingBot {
                 sendPhotoRequest.setPhoto(result.get(0));
 
                 System.out.print(result.get(0));
-
-
-
-                    sendPhoto(sendPhotoRequest);
+                    execute(sendPhotoRequest);
 
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
@@ -92,7 +86,7 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
         try {
-            sendMessage(sendMessage);
+            execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
