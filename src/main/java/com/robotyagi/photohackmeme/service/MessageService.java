@@ -4,6 +4,7 @@ import com.robotyagi.photohackmeme.controller.Bot;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -14,7 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Vector;
 
-@Service
+@Component
 public class MessageService {
     @Autowired
     PicProcessor picProcessor;
